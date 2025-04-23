@@ -5,13 +5,13 @@ import streamlit as st
 import pandas as pd
 import os
 import re
-import openai
+from openai import OpenAI
 from datetime import datetime
 
 # -------------------------------
 # Initialize OpenAI Client
 # -------------------------------
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # -------------------------------
 # Configure Streamlit Page

@@ -59,7 +59,9 @@ def get_financial_advice(income, expenses, savings, debt, goal):
         f"As of {current_date}, I earn ${income} per month and spend ${expenses}. "
         f"I have ${savings} in savings and owe ${debt} in debt. "
         f"My financial goal is: {goal}. "
-        "Based on this, provide a financial plan including budgeting strategies, savings tips, and investment recommendations."
+        "Based on this, provide a financial plan including budgeting strategies, savings tips, and investment recommendations in order to best reach this goal."
+        "Please format your response in clear paragraphs with correct spacing and punctuation."
+        "Avoid markdown formatting."
     )
     
     # Generate the AI response

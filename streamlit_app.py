@@ -6,7 +6,6 @@ import pandas as pd
 import os
 from datetime import datetime
 from openai import OpenAI
-from datetime import datetime
 
 # -------------------------------
 # Initialize OpenAI Client
@@ -22,6 +21,13 @@ st.set_page_config(page_title="SafeSpend", layout="wide")
 # Define Data File Path
 # -------------------------------
 DATA_FILE = "financial_data.csv"
+
+#--------------------------------
+# Initialize Chat History
+#--------------------------------
+
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
 # -------------------------------
 # Function to Load Data
@@ -42,11 +48,20 @@ def save_data(df):
 # -------------------------------
 # Function to Get Financial Advice
 # -------------------------------
+
 def get_financial_advice(income, expenses, savings, debt, goal):
-    prompt = f"""I earn ${income} per month and spend ${expenses}. I have ${savings} in savings and owe ${debt} in debt.
-    My financial goal is: {goal}.
-    Based on this, give me a financial plan including budgeting strategies, savings tips, and investment recommendations."""
+    # Get the current date
+    current_date = datetime.now().strftime("%B %d, %Y")
     
+    # Construct the prompt with the current date
+    prompt = (
+        f"As of {current_date}, I earn ${income} per month and spend ${expenses}. "
+        f"I have ${savings} in savings and owe ${debt} in debt. "
+        f"My financial goal is: {goal}. "
+        "Based on this, provide a financial plan including budgeting strategies, savings tips, and investment recommendations."
+    )
+    
+    # Generate the AI response
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[
@@ -54,8 +69,9 @@ def get_financial_advice(income, expenses, savings, debt, goal):
             {"role": "user", "content": prompt},
         ],
     )
- 
+    
     return response.choices[0].message.content
+
 
 # -------------------------------
 # Application Title and Description
@@ -107,6 +123,7 @@ with st.sidebar.expander("📅 Enter Data for a Prior Month"):
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ]  
+
 #---------------------------------
 # Extract current date
 #---------------------------------
@@ -171,7 +188,7 @@ if st.sidebar.button("Reset Data"):
 investment_goal = st.sidebar.text_area("What are your financial goals? (e.g., Buy a house, Retire early)", placeholder="e.g., Save for a down payment on a house")
 
 # -------------------------------
-# Display Current Month's Financial Data
+# Display All Financial Data
 # -------------------------------
 if not data.empty:
     # Ensure 'Month' column is in datetime format
@@ -180,13 +197,9 @@ if not data.empty:
     # Sort data by Month
     data.sort_values("Month", inplace=True)
 
-    # Retrieve the latest month's data
-    latest_month = data["Month"].max()
-    latest_data = data[data["Month"] == latest_month]
-
-    # Display the latest month's data
-    st.subheader(f"📅 Financial Data for {latest_month.strftime('%B %Y')}")
-    st.dataframe(latest_data.set_index("Month"))
+    # Display all financial data
+    st.subheader("📅 All Financial Data")
+    st.dataframe(data.set_index("Month"))
 else:
     st.info("No financial data available. Please enter and save your financial details.")
 
@@ -196,11 +209,21 @@ else:
 st.subheader("📈 Monthly Financial Trends")
 
 if not data.empty:
+    # Ensure 'Month' column is in datetime format
+    data["Month"] = pd.to_datetime(data["Month"])
+
+    # Sort data by Month
+    data.sort_values("Month", inplace=True)
+
     # Set 'Month' as the index
     data.set_index("Month", inplace=True)
 
-    # Plot the line chart
-    st.line_chart(data)
+    # Plot Income, Expenses, and Savings
+    st.line_chart(data[["Income", "Expenses", "Savings"]])
+
+    # Plot Debt Repayment separately
+    st.subheader("💳 Debt Repayment Over Time")
+    st.line_chart(data[["Debt Repayment"]])
 else:
     st.info("No financial data available to display trends.")
 
@@ -212,6 +235,6 @@ if st.sidebar.button("Get AI Financial Advice"):
         with st.spinner("Analyzing your finances…"):
             advice = get_financial_advice(income, expenses, savings, debt, investment_goal)
             st.subheader("🧠 AI-Powered Financial Plan")
-            st.write(advice)
+            st.markdown(advice)
     else:
         st.warning("Please fill in all financial details and your investment goal to receive advice.")

@@ -23,13 +23,6 @@ st.set_page_config(page_title="SafeSpend", layout="wide")
 # -------------------------------
 DATA_FILE = "financial_data.csv"
 
-#--------------------------------
-# Initialize Chat History
-#--------------------------------
-
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
-
 # -------------------------------
 # Function to Load Data
 # -------------------------------
@@ -261,51 +254,5 @@ if st.sidebar.button("Get AI Financial Advice"):
             cleaned_advice = clean_response(advice)
             st.subheader("🧠 AI-Powered Financial Plan")
             st.text_area("Your SafeSpend Financial Plan:", cleaned_advice, height=300)
-
-# -------------------------------
-# AI Chat feature 
-# -------------------------------
-st.subheader("💬 Ask the AI Money Coach")
-
-# Show chat history
-for i, msg in enumerate(st.session_state.chat_history):
-    if msg["role"] == "user":
-        st.markdown(f"**You:** {msg['content']}")
-    else:
-        st.markdown(f"**AI:** {msg['content']}")
-
-# Text input for new user message
-user_message = st.text_input("Type your message", key="chat_input")
-
-if st.button("Send") and user_message:
-    # Add user message to chat history
-    st.session_state.chat_history.append({"role": "user", "content": user_message})
-
-    # Prepare full message history for OpenAI
-    messages = [{"role": "system", "content": "You are a helpful financial advisor."}] + st.session_state.chat_history
-
-    # Send to OpenAI
-    response = client.chat.completions.create(
-        model="gpt-4",
-        messages=messages
-    )
-
-    # Extract and save assistant reply
-    reply = response.choices[0].message.content
-    st.session_state.chat_history.append({"role": "assistant", "content": reply})
-
-    # Rerun to display the new message
-    st.experimental_rerun()
-
-# -------------------------------
-# Clear Chat
-# -------------------------------
-
-if st.button("Clear Chat"):
-    st.session_state.chat_history = []
-    st.experimental_rerun()
-
-
-
 
 

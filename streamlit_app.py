@@ -4,6 +4,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import re
 from datetime import datetime
 from openai import OpenAI
 
@@ -230,11 +231,26 @@ else:
 # -------------------------------
 # Generate AI-Powered Financial Advice
 # -------------------------------
+
+def clean_response(text):
+    # Remove markdown characters
+    text = re.sub(r"[*_`#]", "", text)
+
+    # Fix missing spaces between words (optional cleanup step for weird cases)
+    text = re.sub(r"([a-z])([A-Z])", r"\1 \2", text)  # "someText" → "some Text"
+    text = re.sub(r"\s{2,}", " ", text)  # Collapse multiple spaces into one
+
+    # Ensure newlines have extra spacing for Streamlit formatting
+    text = text.replace("\n", "\n\n")
+
+    return text.strip()
+
 if st.sidebar.button("Get AI Financial Advice"):
     if income and expenses and savings and debt and investment_goal:
         with st.spinner("Analyzing your finances…"):
             advice = get_financial_advice(income, expenses, savings, debt, investment_goal)
+            cleaned_advice = clean_response(advice)
             st.subheader("🧠 AI-Powered Financial Plan")
-            st.markdown(advice)
-    else:
-        st.warning("Please fill in all financial details and your investment goal to receive advice.")
+            st.markdown(cleaned_advice)
+
+

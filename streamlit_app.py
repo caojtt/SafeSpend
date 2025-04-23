@@ -66,7 +66,7 @@ def get_financial_advice(income, expenses, savings, debt, goal):
     )
     
     # Generate the AI response
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a financial advisor providing actionable advice."},

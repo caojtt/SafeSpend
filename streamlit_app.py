@@ -59,6 +59,7 @@ def get_financial_advice(income, expenses, savings, debt, goal):
         f"As of {current_date}, I earn ${income} per month and spend ${expenses}. "
         f"I have ${savings} in savings and owe ${debt} in debt. "
         f"My financial goal is: {goal}. "
+        "You are a financial coach that gives helpful, non-judgmental, beginner-friendly advice."
         "Based on this, provide a financial plan including budgeting strategies, savings tips, and investment recommendations in order to best reach this goal."
         "Please format your response in clear paragraphs with correct spacing and punctuation."
         "Avoid markdown formatting."
@@ -230,6 +231,25 @@ if not data.empty:
 else:
     st.info("No financial data available to display trends.")
 
+# ------------------------------
+# Clean up formattiing
+# ------------------------------
+
+def clean_response(text):
+    # Remove markdown formatting characters
+    text = re.sub(r"[*_`#~]", "", text)
+
+    # Replace weird newlines between characters (e.g. 4\n0\n0\n0)
+    text = re.sub(r"(?<=[a-zA-Z0-9])\n(?=[a-zA-Z0-9])", "", text)
+
+    # Normalize double newlines into paragraph spacing
+    text = re.sub(r"\n{2,}", "\n\n", text)
+
+    # Collapse excessive spacing
+    text = re.sub(r"\s{3,}", "  ", text)
+
+    return text.strip()
+
 # -------------------------------
 # Generate AI-Powered Financial Advice
 # -------------------------------
@@ -241,6 +261,51 @@ if st.sidebar.button("Get AI Financial Advice"):
             cleaned_advice = clean_response(advice)
             st.subheader("🧠 AI-Powered Financial Plan")
             st.text_area("Your SafeSpend Financial Plan:", cleaned_advice, height=300)
+
+# -------------------------------
+# AI Chat feature 
+# -------------------------------
+st.subheader("💬 Ask the AI Money Coach")
+
+# Show chat history
+for i, msg in enumerate(st.session_state.chat_history):
+    if msg["role"] == "user":
+        st.markdown(f"**You:** {msg['content']}")
+    else:
+        st.markdown(f"**AI:** {msg['content']}")
+
+# Text input for new user message
+user_message = st.text_input("Type your message", key="chat_input")
+
+if st.button("Send") and user_message:
+    # Add user message to chat history
+    st.session_state.chat_history.append({"role": "user", "content": user_message})
+
+    # Prepare full message history for OpenAI
+    messages = [{"role": "system", "content": "You are a helpful financial advisor."}] + st.session_state.chat_history
+
+    # Send to OpenAI
+    response = client.chat.completions.create(
+        model="gpt-4",
+        messages=messages
+    )
+
+    # Extract and save assistant reply
+    reply = response.choices[0].message.content
+    st.session_state.chat_history.append({"role": "assistant", "content": reply})
+
+    # Rerun to display the new message
+    st.experimental_rerun()
+
+# -------------------------------
+# Clear Chat
+# -------------------------------
+
+if st.button("Clear Chat"):
+    st.session_state.chat_history = []
+    st.experimental_rerun()
+
+
 
 
 

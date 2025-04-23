@@ -229,23 +229,28 @@ if not data.empty:
     st.line_chart(data[["Debt Repayment"]])
 else:
     st.info("No financial data available to display trends.")
+#-------------------------------
+# Clean up formattiing
+#-------------------------------
+
+def clean_response(text):
+    # Remove markdown formatting characters
+    text = re.sub(r"[*_`#~]", "", text)
+
+    # Replace weird newlines between characters (e.g. 4\n0\n0\n0)
+    text = re.sub(r"(?<=[a-zA-Z0-9])\n(?=[a-zA-Z0-9])", "", text)
+
+    # Normalize double newlines into paragraph spacing
+    text = re.sub(r"\n{2,}", "\n\n", text)
+
+    # Collapse excessive spacing
+    text = re.sub(r"\s{3,}", "  ", text)
+
+    return text.strip()
 
 # -------------------------------
 # Generate AI-Powered Financial Advice
 # -------------------------------
-
-def clean_response(text):
-    # Remove markdown characters
-    text = re.sub(r"[*_`#]", "", text)
-
-    # Fix missing spaces between words (optional cleanup step for weird cases)
-    text = re.sub(r"([a-z])([A-Z])", r"\1 \2", text)  # "someText" → "some Text"
-    text = re.sub(r"\s{2,}", " ", text)  # Collapse multiple spaces into one
-
-    # Ensure newlines have extra spacing for Streamlit formatting
-    text = text.replace("\n", "\n\n")
-
-    return text.strip()
 
 if st.sidebar.button("Get AI Financial Advice"):
     if income and expenses and savings and debt and investment_goal:
@@ -253,6 +258,7 @@ if st.sidebar.button("Get AI Financial Advice"):
             advice = get_financial_advice(income, expenses, savings, debt, investment_goal)
             cleaned_advice = clean_response(advice)
             st.subheader("🧠 AI-Powered Financial Plan")
-            st.markdown(cleaned_advice)
+            st.text_area("Your Plan:", cleaned_advice, height=300)
+
 
 

@@ -5,13 +5,13 @@ import streamlit as st
 import pandas as pd
 import os
 import re
+import openai
 from datetime import datetime
-from openai import OpenAI
 
 # -------------------------------
 # Initialize OpenAI Client
 # -------------------------------
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # -------------------------------
 # Configure Streamlit Page
@@ -66,7 +66,7 @@ def get_financial_advice(income, expenses, savings, debt, goal):
     )
     
     # Generate the AI response
-    response = client.chat.completions.create(
+    response = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a financial advisor providing actionable advice."},

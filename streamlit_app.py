@@ -7,6 +7,7 @@ import os
 import re
 from openai import OpenAI
 from datetime import datetime
+from PIL import Image
 
 # -------------------------------
 # Initialize OpenAI Client
@@ -16,7 +17,10 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 # -------------------------------
 # Configure Streamlit Page
 # -------------------------------
+
 st.set_page_config(page_title="SafeSpend", layout="wide")
+logo = Image.open("logo.png")
+st.image(logo, width=150)
 
 # -------------------------------
 # Define Data File Path

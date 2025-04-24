@@ -114,7 +114,7 @@ if st.sidebar.button("Save This Month's Data"):
 # -------------------------------
 # Optional: Enter Data for a Prior Month
 # -------------------------------
-with st.sidebar.expander("📅 Enter Data for a Prior Month"):
+with st.sidebar.expander("Enter Data for a Prior Month"):
     # Define month and year options
     months = [
         "January", "February", "March", "April", "May", "June",
@@ -195,7 +195,7 @@ if not data.empty:
     data.sort_values("Month", inplace=True)
 
     # Display all financial data
-    st.subheader("📅 All Financial Data")
+    st.subheader("All Financial Data")
     st.dataframe(data.set_index("Month"))
 else:
     st.info("No financial data available. Please enter and save your financial details.")
@@ -203,7 +203,7 @@ else:
 # -------------------------------
 # Visualize Financial Trends Over Time
 # -------------------------------
-st.subheader("📈 Monthly Financial Trends")
+st.subheader("Monthly Financial Trends")
 
 if not data.empty:
     # Ensure 'Month' column is in datetime format
@@ -219,7 +219,7 @@ if not data.empty:
     st.line_chart(data[["Income", "Expenses", "Savings"]])
 
     # Plot Debt Repayment separately
-    st.subheader("💳 Debt Repayment Over Time")
+    st.subheader("Debt Repayment Over Time")
     st.line_chart(data[["Debt Repayment"]])
 else:
     st.info("No financial data available to display trends.")
@@ -252,7 +252,7 @@ if st.sidebar.button("Get AI Financial Advice"):
         with st.spinner("Analyzing your finances…"):
             advice = get_financial_advice(income, expenses, savings, debt, investment_goal)
             cleaned_advice = clean_response(advice)
-            st.subheader("🧠 AI-Powered Financial Plan")
+            st.subheader("AI-Powered Financial Plan")
             st.text_area("Your SafeSpend Financial Plan:", cleaned_advice, height=300)
 
 

@@ -19,7 +19,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 # -------------------------------
 
 st.set_page_config(page_title="SafeSpend", layout="wide")
-logo = Image.open("SafeSpendFinaLogo.png")
+logo = Image.open("SafeSpendFinalLogo.png")
 st.image(logo, width=150)
 
 # -------------------------------

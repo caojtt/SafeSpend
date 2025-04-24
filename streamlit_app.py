@@ -248,16 +248,16 @@ def clean_response(text):
 # -------------------------------
 
 if st.sidebar.button("Get AI Financial Advice"):
-    if income and expenses and savings and debt and investment_goal:
+    if investment_goal.strip() != "":
         with st.spinner("Analyzing your finances…"):
-            advice = get_financial_advice(income, expenses, savings, debt, investment_goal)
-            cleaned_advice = clean_response(advice)
-            st.subheader("AI-Powered Financial Plan")
-            st.text_area("Your SafeSpend Financial Plan:", cleaned_advice, height=300)
-
-
-
-
-
+            try:
+                advice = get_financial_advice(income, expenses, savings, debt, investment_goal)
+                cleaned_advice = clean_response(advice)
+                st.subheader("🧠 AI-Powered Financial Plan")
+                st.text_area("Your SafeSpend Financial Plan:", cleaned_advice, height=300)
+            except Exception as e:
+                st.error(f"⚠️ Something went wrong with the AI service:\n\n{e}")
+    else:
+        st.warning("Please enter your financial goal to receive advice.")
 
 

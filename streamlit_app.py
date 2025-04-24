@@ -141,12 +141,10 @@ with st.sidebar.expander("Enter Data for a Prior Month"):
     prior_month = datetime(selected_year, selected_month_index, 1)
 
     # Input fields for financial data
-    income = st.sidebar.number_input("Monthly Income ($)", ..., key="Monthly Income ($)")
-    expenses = st.sidebar.number_input("Total Monthly Expenses ($)", ..., key="Total Monthly Expenses ($)")
-    savings = st.sidebar.number_input("Current Savings ($)", ..., key="Current Savings ($)")
-    debt = st.sidebar.number_input("Total Debt ($)", ..., key="Total Debt ($)")
-    investment_goal = st.sidebar.text_area("What are your financial goals? (e.g., Buy a house, Retire early)", key="What are your financial goals? (e.g., Buy a house, Retire early)")
-
+    prior_income = st.number_input("Monthly Income ($)", min_value=0.0, step=100.0, value=0.0, key="prior_income")
+    prior_expenses = st.number_input("Total Monthly Expenses ($)", min_value=0.0, step=100.0, value=0.0, key="prior_expenses")
+    prior_savings = st.number_input("Current Savings ($)", min_value=0.0, step=100.0, value=0.0, key="prior_savings")
+    prior_debt = st.number_input("Total Debt ($)", min_value=0.0, step=100.0, value=0.0, key="prior_debt")
 
     # Button to save the prior month's data
     if st.button("Save Prior Month's Data"):
@@ -178,16 +176,10 @@ def reset_data():
 # -------------------------------
 data = load_data()
 
-# Button to reset the charts and input data
+# Button to reset the data
 if st.sidebar.button("Reset Data"):
     data = reset_data()  # Resets the data to an empty DataFrame
     st.success("Data has been reset.")
-    st.session_state["Monthly Income ($)"] = 0.0
-    st.session_state["Total Monthly Expenses ($)"] = 0.0
-    st.session_state["Current Savings ($)"] = 0.0
-    st.session_state["Total Debt ($)"] = 0.0
-    st.session_state["What are your financial goals? (e.g., Buy a house, Retire early)"] = ""
-
 
 
 investment_goal = st.sidebar.text_area("What are your financial goals? (e.g., Buy a house, Retire early)", placeholder="e.g., Save for a down payment on a house")
@@ -262,6 +254,9 @@ if st.sidebar.button("Get AI Financial Advice"):
             cleaned_advice = clean_response(advice)
             st.subheader("AI-Powered Financial Plan")
             st.text_area("Your SafeSpend Financial Plan:", cleaned_advice, height=300)
+
+
+
 
 
 

@@ -16,7 +16,6 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 # -------------------------------
 # Configure Streamlit Page
 # -------------------------------
-
 st.set_page_config(page_title="SafeSpend", layout="wide")
 
 # -------------------------------
@@ -255,5 +254,7 @@ if st.sidebar.button("Get AI Financial Advice"):
             cleaned_advice = clean_response(advice)
             st.subheader("AI-Powered Financial Plan")
             st.text_area("Your SafeSpend Financial Plan:", cleaned_advice, height=300)
+
+
 
 

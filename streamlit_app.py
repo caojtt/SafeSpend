@@ -180,6 +180,12 @@ data = load_data()
 if st.sidebar.button("Reset Data"):
     data = reset_data()  # Resets the data to an empty DataFrame
     st.success("Data has been reset.")
+    st.session_state["Monthly Income ($)"] = 0.0
+    st.session_state["Total Monthly Expenses ($)"] = 0.0
+    st.session_state["Current Savings ($)"] = 0.0
+    st.session_state["Total Debt ($)"] = 0.0
+    st.session_state["What are your financial goals? (e.g., Buy a house, Retire early)"] = ""
+
 
 
 investment_goal = st.sidebar.text_area("What are your financial goals? (e.g., Buy a house, Retire early)", placeholder="e.g., Save for a down payment on a house")

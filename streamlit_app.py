@@ -40,6 +40,33 @@ def save_data(df):
     df.to_csv(DATA_FILE, index=False)
 
 # -------------------------------
+# Function to Reset Data
+# -------------------------------
+def reset_data():
+    if os.path.exists(DATA_FILE):
+        os.remove(DATA_FILE)  # Deletes the data file
+    return pd.DataFrame(columns=["Month", "Income", "Expenses", "Savings", "Debt Repayment"])
+
+# ------------------------------
+# Function to Clean Formatting
+# ------------------------------
+
+def clean_response(text):
+    # Remove markdown formatting characters
+    text = re.sub(r"[*_`#~]", "", text)
+
+    # Replace weird newlines between characters (e.g. 4\n0\n0\n0)
+    text = re.sub(r"(?<=[a-zA-Z0-9])\n(?=[a-zA-Z0-9])", "", text)
+
+    # Normalize double newlines into paragraph spacing
+    text = re.sub(r"\n{2,}", "\n\n", text)
+
+    # Collapse excessive spacing
+    text = re.sub(r"\s{3,}", "  ", text)
+
+    return text.strip()
+
+# -------------------------------
 # Function to Get Financial Advice
 # -------------------------------
 
@@ -164,14 +191,6 @@ with st.sidebar.expander("Enter Data for a Prior Month"):
             st.warning(f"Data for {prior_month.strftime('%B %Y')} already exists.")
 
 # -------------------------------
-# Reset Data Function
-# -------------------------------
-def reset_data():
-    if os.path.exists(DATA_FILE):
-        os.remove(DATA_FILE)  # Deletes the data file
-    return pd.DataFrame(columns=["Month", "Income", "Expenses", "Savings", "Debt Repayment"])
-
-# -------------------------------
 # Reset the Data When the App Starts Fresh
 # -------------------------------
 data = load_data()
@@ -223,25 +242,6 @@ if not data.empty:
     st.line_chart(data[["Debt Repayment"]])
 else:
     st.info("No financial data available to display trends.")
-
-# ------------------------------
-# Clean up formattiing
-# ------------------------------
-
-def clean_response(text):
-    # Remove markdown formatting characters
-    text = re.sub(r"[*_`#~]", "", text)
-
-    # Replace weird newlines between characters (e.g. 4\n0\n0\n0)
-    text = re.sub(r"(?<=[a-zA-Z0-9])\n(?=[a-zA-Z0-9])", "", text)
-
-    # Normalize double newlines into paragraph spacing
-    text = re.sub(r"\n{2,}", "\n\n", text)
-
-    # Collapse excessive spacing
-    text = re.sub(r"\s{3,}", "  ", text)
-
-    return text.strip()
 
 # -------------------------------
 # Generate AI-Powered Financial Advice

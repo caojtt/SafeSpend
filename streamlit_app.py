@@ -70,25 +70,32 @@ def clean_response(text):
 # Function to Get Financial Advice
 # -------------------------------
 
-def get_financial_advice(income, expenses, savings, debt, goal, history_context=""):
+def get_financial_advice(income, expenses, savings, debt, goal):
+    # Get the current date
     current_date = datetime.now().strftime("%B %d, %Y")
+    
+    # Construct the prompt with the current date
     prompt = (
-        f"{history_context} "
-        f"As of {current_date}, the user earns ${income} per month and spends ${expenses}, "
-        f"has ${savings} in savings, and owes ${debt} in debt. "
-        f"The financial goal is: {goal}. "
-        "You are a financial coach that gives helpful, non-judgmental, beginner-friendly advice. "
-        "Provide a plan that includes budgeting strategies, savings tips, and investment recommendations. "
-        "Use clear paragraphs and avoid markdown formatting."
+        f"As of {current_date}, I earn ${income} per month and spend ${expenses}. "
+        f"I have ${savings} in savings and owe ${debt} in debt. "
+        f"My financial goal is: {goal}. "
+        "You are a financial coach that gives helpful, non-judgmental, beginner-friendly advice."
+        "Based on this, provide a financial plan including budgeting strategies, savings tips, and investment recommendations in order to best reach this goal."
+        "Please format your response in clear paragraphs with correct spacing and punctuation."
+        "Avoid markdown formatting."
     )
+    
+    # Generate the AI response
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[
-            {"role": "system", "content": "You are a financial advisor."},
-            {"role": "user", "content": prompt}
-        ]
+            {"role": "system", "content": "You are a financial advisor providing actionable advice."},
+            {"role": "user", "content": prompt},
+        ],
     )
+    
     return response.choices[0].message.content
+
 
 # -------------------------------
 # Application Title and Description
@@ -242,23 +249,11 @@ else:
 
 if st.sidebar.button("Get AI Financial Advice"):
     if investment_goal.strip() != "":
-        # Load recent data if available
-        recent_data = ""
-        if not data.empty:
-            last_row = data.sort_values("Month").iloc[-1]
-            recent_data = (
-                f"Previously, the user earned ${last_row['Income']}, spent ${last_row['Expenses']}, "
-                f"had ${last_row['Savings']} in savings, and owed ${last_row['Debt Repayment']} in debt "
-                f"as of {last_row['Month'].strftime('%B %Y')}."
-            )
-
         with st.spinner("Analyzing your finances…"):
             try:
-                advice = get_financial_advice(
-                    income, expenses, savings, debt, investment_goal, history_context=recent_data
-                )
+                advice = get_financial_advice(income, expenses, savings, debt, investment_goal)
                 cleaned_advice = clean_response(advice)
-                st.subheader("🧠 AI-Powered Financial Plan")
+                st.subheader("AI-Powered Financial Plan")
                 st.text_area("Your SafeSpend Financial Plan:", cleaned_advice, height=300)
             except Exception as e:
                 st.error(f"Something went wrong with the AI service:\n\n{e}")

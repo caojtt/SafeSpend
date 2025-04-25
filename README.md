@@ -72,6 +72,7 @@ Continue using the app over time to track monthly trends
 
 
 
+
 Technologies Used
 Python 3.8+
 

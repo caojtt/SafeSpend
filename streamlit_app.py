@@ -70,13 +70,19 @@ class DataCleaner:
 # -------------------------------
 # SafeSpend Main Application Class
 # -------------------------------
+
+# --------------
+# Controller
+# --------------
 class SafeSpendApp:
     def __init__(self):
         self.data_manager = FinancialDataManager()
         self.advisor = FinancialAdvisor()
         self.cleaner = DataCleaner()
         self.data = self.data_manager.load_data()
-
+# --------------
+# GUI 
+# --------------
     def run(self):
         st.set_page_config(page_title="SafeSpend", layout="wide")
         st.title("SafeSpend AI Money Coach: Smarter Finance Management")

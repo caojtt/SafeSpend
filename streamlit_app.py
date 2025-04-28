@@ -56,6 +56,18 @@ class FinancialAdvisor:
         return response.choices[0].message.content
 
 # -------------------------------
+# Data Cleaner Utility Class
+# -------------------------------
+class DataCleaner:
+    @staticmethod
+    def clean_response(text):
+        text = re.sub(r"[*_`#~]", "", text)
+        text = re.sub(r"(?<=[a-zA-Z0-9])\n(?=[a-zA-Z0-9])", "", text)
+        text = re.sub(r"\n{2,}", "\n\n", text)
+        text = re.sub(r"\s{3,}", "  ", text)
+        return text.strip()
+
+# -------------------------------
 # SafeSpend Main Application Class
 # -------------------------------
 class SafeSpendApp:

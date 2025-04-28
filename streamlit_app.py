@@ -9,7 +9,7 @@ from openai import OpenAI
 from datetime import datetime
 
 # -------------------------------
-Financial Data Manager Class
+# Financial Data Manager Class
 # -------------------------------
 class FinancialDataManager:
     DATA_FILE = "financial_data.csv"
@@ -61,14 +61,14 @@ class FinancialAdvisor:
 class DataCleaner:
     @staticmethod
     def clean_response(text):
-        text = re.sub(r"[*_`#~]", "", text)
+        text = re.sub(r"[*_#~]", "", text)
         text = re.sub(r"(?<=[a-zA-Z0-9])\n(?=[a-zA-Z0-9])", "", text)
         text = re.sub(r"\n{2,}", "\n\n", text)
         text = re.sub(r"\s{3,}", "  ", text)
         return text.strip()
 
 # -------------------------------
-# SafeSpend Main Application Class (Streamlit GUI)
+# SafeSpend Main Application Class
 # -------------------------------
 class SafeSpendApp:
     def __init__(self):
@@ -187,5 +187,6 @@ class SafeSpendApp:
 if __name__ == "__main__":
     app = SafeSpendApp()
     app.run()
+
 
 

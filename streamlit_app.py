@@ -61,7 +61,7 @@ class FinancialAdvisor:
 class DataCleaner:
     @staticmethod
     def clean_response(text):
-        text = re.sub(r"[*_#~]", "", text)
+        text = re.sub(r"[*_`#~]", "", text)
         text = re.sub(r"(?<=[a-zA-Z0-9])\n(?=[a-zA-Z0-9])", "", text)
         text = re.sub(r"\n{2,}", "\n\n", text)
         text = re.sub(r"\s{3,}", "  ", text)
@@ -88,18 +88,33 @@ class SafeSpendApp:
     def sidebar_inputs(self):
         st.sidebar.header("Enter Your Monthly Financial Details")
 
+        # Input fields
         income = st.sidebar.number_input("Monthly Income ($)", min_value=0.0, step=100.0, value=0.0)
         expenses = st.sidebar.number_input("Total Monthly Expenses ($)", min_value=0.0, step=100.0, value=0.0)
         savings = st.sidebar.number_input("Current Savings ($)", min_value=0.0, step=100.0, value=0.0)
         debt = st.sidebar.number_input("Total Debt ($)", min_value=0.0, step=100.0, value=0.0)
-        investment_goal = st.sidebar.text_area("What are your financial goals?", placeholder="e.g., Save for a down payment on a house")
 
+        # Save Current Month Button
         if st.sidebar.button("Save This Month's Data"):
             self.save_current_month_data(income, expenses, savings, debt)
 
+        # Spacer
+        st.sidebar.markdown("---")
+
+        # Prior Month Data Entry
         with st.sidebar.expander("Enter Data for a Prior Month"):
             self.save_prior_month_data()
 
+        # Spacer
+        st.sidebar.markdown("---")
+
+        # Investment goal input
+        investment_goal = st.sidebar.text_area(
+            "What are your financial goals?",
+            placeholder="e.g., Save for a down payment on a house"
+        )
+
+        # Reset and Get Advice buttons
         if st.sidebar.button("Reset Data"):
             self.data = self.data_manager.reset_data()
             st.success("Data has been reset.")
@@ -187,6 +202,5 @@ class SafeSpendApp:
 if __name__ == "__main__":
     app = SafeSpendApp()
     app.run()
-
 
 

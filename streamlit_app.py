@@ -48,6 +48,29 @@ def reset_data():
     return pd.DataFrame(columns=["Month", "Income", "Expenses", "Savings", "Debt Repayment"])
 
 # ------------------------------
+# Function for Data & Chart Display
+# ------------------------------
+
+# -------------------------------
+# Function to Display Data and Charts
+# -------------------------------
+def display_data_and_charts(data):
+    if not data.empty:
+        data["Month"] = pd.to_datetime(data["Month"])
+        data.sort_values("Month", inplace=True)
+
+        st.subheader("All Financial Data")
+        st.dataframe(data.set_index("Month"))
+
+        st.subheader("Monthly Financial Trends")
+        st.line_chart(data[["Income", "Expenses", "Savings"]])
+
+        st.subheader("Debt Repayment Over Time")
+        st.line_chart(data[["Debt Repayment"]])
+    else:
+        st.info("No financial data available to display trends.")
+
+# ------------------------------
 # Function to Clean Formatting
 # ------------------------------
 
@@ -152,12 +175,16 @@ with st.sidebar.expander("Enter Data for a Prior Month"):
 # Extract current date
 #---------------------------------
     current_date = datetime.today()
-#---------------------------------
+# ---------------------------------
 # Extract the current year
-#---------------------------------
+# ---------------------------------
     current_year = current_date.year
 
     years = list(range(2020, current_year + 1))
+
+# ---------------------------------
+# Prior Month Input and Button
+# ---------------------------------
 
     # Create separate selectboxes for month and year
     selected_month_name = st.selectbox("Select Month", months)
@@ -202,46 +229,6 @@ if st.sidebar.button("Reset Data"):
 
 
 investment_goal = st.sidebar.text_area("What are your financial goals? (e.g., Buy a house, Retire early)", placeholder="e.g., Save for a down payment on a house")
-
-# -------------------------------
-# Display All Financial Data
-# -------------------------------
-if not data.empty:
-    # Ensure 'Month' column is in datetime format
-    data["Month"] = pd.to_datetime(data["Month"])
-
-    # Sort data by Month
-    data.sort_values("Month", inplace=True)
-
-    # Display all financial data
-    st.subheader("All Financial Data")
-    st.dataframe(data.set_index("Month"))
-else:
-    st.info("No financial data available. Please enter and save your financial details.")
-
-# -------------------------------
-# Visualize Financial Trends Over Time
-# -------------------------------
-st.subheader("Monthly Financial Trends")
-
-if not data.empty:
-    # Ensure 'Month' column is in datetime format
-    data["Month"] = pd.to_datetime(data["Month"])
-
-    # Sort data by Month
-    data.sort_values("Month", inplace=True)
-
-    # Set 'Month' as the index
-    data.set_index("Month", inplace=True)
-
-    # Plot Income, Expenses, and Savings
-    st.line_chart(data[["Income", "Expenses", "Savings"]])
-
-    # Plot Debt Repayment separately
-    st.subheader("Debt Repayment Over Time")
-    st.line_chart(data[["Debt Repayment"]])
-else:
-    st.info("No financial data available to display trends.")
 
 # -------------------------------
 # Generate AI-Powered Financial Advice

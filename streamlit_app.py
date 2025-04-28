@@ -47,10 +47,6 @@ def reset_data():
         os.remove(DATA_FILE)  # Deletes the data file
     return pd.DataFrame(columns=["Month", "Income", "Expenses", "Savings", "Debt Repayment"])
 
-# ------------------------------
-# Function for Data & Chart Display
-# ------------------------------
-
 # -------------------------------
 # Function to Display Data and Charts
 # -------------------------------
@@ -216,6 +212,11 @@ with st.sidebar.expander("Enter Data for a Prior Month"):
             st.success(f"Data for {prior_month.strftime('%B %Y')} saved successfully!")
         else:
             st.warning(f"Data for {prior_month.strftime('%B %Y')} already exists.")
+
+# -------------------------------
+# Display All Financial Data
+# -------------------------------
+display_data_and_charts(data)
 
 # -------------------------------
 # Reset the Data When the App Starts Fresh

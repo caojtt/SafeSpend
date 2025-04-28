@@ -9,7 +9,7 @@ from openai import OpenAI
 from datetime import datetime
 
 # -------------------------------
-# Financial Data Manager Class
+# Backend: Financial Data Manager Class
 # -------------------------------
 class FinancialDataManager:
     DATA_FILE = "financial_data.csv"
@@ -29,7 +29,7 @@ class FinancialDataManager:
         return self.load_data()
 
 # -------------------------------
-# Financial Advisor Class
+# Backend: Financial Advisor Class
 # -------------------------------
 class FinancialAdvisor:
     def __init__(self):
@@ -56,7 +56,7 @@ class FinancialAdvisor:
         return response.choices[0].message.content
 
 # -------------------------------
-# Data Cleaner Utility Class
+# Backend: Data Cleaner Utility Class
 # -------------------------------
 class DataCleaner:
     @staticmethod
@@ -68,7 +68,7 @@ class DataCleaner:
         return text.strip()
 
 # -------------------------------
-# SafeSpend Main Application Class
+# Frontend: SafeSpend Main Application Class (Streamlit GUI)
 # -------------------------------
 class SafeSpendApp:
     def __init__(self):

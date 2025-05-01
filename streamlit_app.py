@@ -149,7 +149,8 @@ def main():
         expenses = st.number_input("Monthly Expenses ($)", min_value=0.0, step=100.0)
         savings = st.number_input("Savings ($)", min_value=0.0, step=100.0)
         debt = st.number_input("Debt ($)", min_value=0.0, step=100.0)
-    
+        goal = st.sidebar.text_area("Financial Goal", placeholder="e.g., I want to save for a house")
+        
         if st.button("Save Data"):
             if controller.save_data(selected_date, income, expenses, savings, debt):
                 st.success(f"Data for {selected_date.strftime('%B %Y')} saved successfully!")

@@ -127,7 +127,7 @@ def main():
 # -------------------------------
 # Unified Save Section (Current or Prior Month)
 # -------------------------------
-    with st.sidebar.expander("Enter or Save Monthly Data"):
+    with st.sidebar.expander("Enter & Save Monthly Financial Data"):
         # Default: current month
         selected_date = datetime.now().replace(day=1)
     
@@ -145,13 +145,13 @@ def main():
             selected_date = datetime(selected_year, months.index(selected_month) + 1, 1)
     
         # Single set of input fields used for both current and prior
-        income_val = st.number_input("Monthly Income ($)", min_value=0.0, step=100.0)
-        expenses_val = st.number_input("Monthly Expenses ($)", min_value=0.0, step=100.0)
-        savings_val = st.number_input("Savings ($)", min_value=0.0, step=100.0)
-        debt_val = st.number_input("Debt ($)", min_value=0.0, step=100.0)
+        income = st.number_input("Monthly Income ($)", min_value=0.0, step=100.0)
+        expenses = st.number_input("Monthly Expenses ($)", min_value=0.0, step=100.0)
+        savings = st.number_input("Savings ($)", min_value=0.0, step=100.0)
+        debt = st.number_input("Debt ($)", min_value=0.0, step=100.0)
     
         if st.button("Save Data"):
-            if controller.save_data(selected_date, income_val, expenses_val, savings_val, debt_val):
+            if controller.save_data(selected_date, income, expenses, savings, debt):
                 st.success(f"Data for {selected_date.strftime('%B %Y')} saved successfully!")
             else:
                 st.warning(f"Data for {selected_date.strftime('%B %Y')} already exists.")

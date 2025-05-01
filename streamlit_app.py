@@ -124,37 +124,37 @@ def main():
     advisor = OpenAIFinancialAdvisor()
     controller = SafeSpendController(data_manager, advisor)
 
-    # -------------------------------
+# -------------------------------
 # Unified Save Section (Current or Prior Month)
 # -------------------------------
-with st.sidebar.expander("Enter or Save Monthly Data"):
-    # Default: current month
-    selected_date = datetime.now().replace(day=1)
-
-    # Toggle for prior month entry
-    if st.checkbox("Use Prior Month"):
-        months = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-        ]
-        current_year = datetime.today().year
-        years = list(range(2020, current_year + 1))
-
-        selected_month = st.selectbox("Month", months)
-        selected_year = st.selectbox("Year", years[::-1])
-        selected_date = datetime(selected_year, months.index(selected_month) + 1, 1)
-
-    # Single set of input fields used for both current and prior
-    income_val = st.number_input("Monthly Income ($)", min_value=0.0, step=100.0)
-    expenses_val = st.number_input("Monthly Expenses ($)", min_value=0.0, step=100.0)
-    savings_val = st.number_input("Savings ($)", min_value=0.0, step=100.0)
-    debt_val = st.number_input("Debt ($)", min_value=0.0, step=100.0)
-
-    if st.button("Save Data"):
-        if controller.save_data(selected_date, income_val, expenses_val, savings_val, debt_val):
-            st.success(f"Data for {selected_date.strftime('%B %Y')} saved successfully!")
-        else:
-            st.warning(f"Data for {selected_date.strftime('%B %Y')} already exists.")
+    with st.sidebar.expander("Enter or Save Monthly Data"):
+        # Default: current month
+        selected_date = datetime.now().replace(day=1)
+    
+        # Toggle for prior month entry
+        if st.checkbox("Use Prior Month"):
+            months = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ]
+            current_year = datetime.today().year
+            years = list(range(2020, current_year + 1))
+    
+            selected_month = st.selectbox("Month", months)
+            selected_year = st.selectbox("Year", years[::-1])
+            selected_date = datetime(selected_year, months.index(selected_month) + 1, 1)
+    
+        # Single set of input fields used for both current and prior
+        income_val = st.number_input("Monthly Income ($)", min_value=0.0, step=100.0)
+        expenses_val = st.number_input("Monthly Expenses ($)", min_value=0.0, step=100.0)
+        savings_val = st.number_input("Savings ($)", min_value=0.0, step=100.0)
+        debt_val = st.number_input("Debt ($)", min_value=0.0, step=100.0)
+    
+        if st.button("Save Data"):
+            if controller.save_data(selected_date, income_val, expenses_val, savings_val, debt_val):
+                st.success(f"Data for {selected_date.strftime('%B %Y')} saved successfully!")
+            else:
+                st.warning(f"Data for {selected_date.strftime('%B %Y')} already exists.")
 
 
     # income = st.sidebar.number_input("Monthly Income ($)", min_value=0.0, step=100.0)

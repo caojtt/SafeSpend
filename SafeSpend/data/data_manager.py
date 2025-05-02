@@ -1,5 +1,3 @@
-from SafeSpend.data.data_manager import IDataManager
-
 # ---------------------------
 # Data Layer
 # ---------------------------

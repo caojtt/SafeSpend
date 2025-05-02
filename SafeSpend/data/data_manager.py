@@ -1,7 +1,7 @@
 # ---------------------------
 # Data Layer
 # ---------------------------
-class CSVDataManager(IDataManager):
+class CSVDataManager:
     def __init__(self, file_path="financial_data.csv"):
         self.file_path = file_path
 

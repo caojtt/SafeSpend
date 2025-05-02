@@ -124,11 +124,9 @@ def main():
     advisor = OpenAIFinancialAdvisor()
     controller = SafeSpendController(data_manager, advisor)
 
-# -------------------------------
-# Unified Save Section (Current or Prior Month)
-# -------------------------------
+    
     with st.sidebar.expander("Enter & Save Monthly Financial Data"):
-        # Default: current month
+        # Default for current month
         selected_date = datetime.now().replace(day=1)
     
         # Toggle for prior month entry
@@ -144,7 +142,6 @@ def main():
             selected_year = st.selectbox("Year", years[::-1])
             selected_date = datetime(selected_year, months.index(selected_month) + 1, 1)
     
-        # Single set of input fields used for both current and prior
         income = st.number_input("Monthly Income ($)", min_value=0.0, step=100.0)
         expenses = st.number_input("Monthly Expenses ($)", min_value=0.0, step=100.0)
         savings = st.number_input("Savings ($)", min_value=0.0, step=100.0)
@@ -156,20 +153,6 @@ def main():
                 st.success(f"Data for {selected_date.strftime('%B %Y')} saved successfully!")
             else:
                 st.warning(f"Data for {selected_date.strftime('%B %Y')} already exists.")
-
-
-    # income = st.sidebar.number_input("Monthly Income ($)", min_value=0.0, step=100.0)
-    # expenses = st.sidebar.number_input("Monthly Expenses ($)", min_value=0.0, step=100.0)
-    # savings = st.sidebar.number_input("Savings ($)", min_value=0.0, step=100.0)
-    # debt = st.sidebar.number_input("Debt ($)", min_value=0.0, step=100.0)
-    # goal = st.sidebar.text_area("Financial Goal", placeholder="e.g., Save for a house")
-
-    # if st.sidebar.button("Save This Month"):
-    #     month = datetime.now().replace(day=1)
-    #     if controller.save_data(month, income, expenses, savings, debt):
-    #         st.success("Data saved.")
-    #     else:
-    #         st.warning("Data for this month already exists.")
 
     if st.sidebar.button("Reset Data"):
         controller.reset_data()

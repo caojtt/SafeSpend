@@ -2,7 +2,7 @@
 # ---------------------------
 # Interfaces and Abstract Classes
 # ---------------------------
-class IDataManager(ABC):
+class IDataManager:
     @abstractmethod
     def load_data(self): pass
 
@@ -13,6 +13,6 @@ class IDataManager(ABC):
     def reset_data(self): pass
 
 
-class IFinancialAdvisor(ABC):
+class IFinancialAdvisor:
     @abstractmethod
     def get_advice(self, income, expenses, savings, debt, goal): pass

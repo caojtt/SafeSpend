@@ -1,3 +1,4 @@
+from SafeSpend.abstract.abstract import IDataManager, IFinancialAdvisor
 
 # ---------------------------
 # ViewModel / Controller

@@ -1,5 +1,6 @@
 from datetime import datetime
 from openai import OpenAI
+import os
 
 # ---------------------------
 # AI Financial Advisor

@@ -1,6 +1,6 @@
 Web based product - Link is below
 
-https://safespend-cfqwetjhatg8w9vc5wzrxg.streamlit.app/
+https://safespend-n7sfnhkw7ylzs4nsbanaeu.streamlit.app/
 
 STEPS TO RECIEVE FINANCIAL ADVICE FROM SAFESPEND AI MONEY COACH
 

@@ -17,6 +17,7 @@ from openai import OpenAI
 def main():
     st.set_page_config(page_title="SafeSpend", layout="wide")
     st.title("SafeSpend AI Money Coach")
+    st.subheader("Get AI-powered financial insights for budgeting, savings, and investments.")
 
     data_manager = CSVDataManager()
     advisor = OpenAIFinancialAdvisor()

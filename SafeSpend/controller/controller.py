@@ -1,4 +1,5 @@
 from SafeSpend.abstract.abstract import IDataManager, IFinancialAdvisor
+import pandas as pd
 
 # ---------------------------
 # ViewModel / Controller

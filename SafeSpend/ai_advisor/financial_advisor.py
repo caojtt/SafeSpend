@@ -1,3 +1,6 @@
+from datetime import datetime
+from openai import OpenAI
+
 # ---------------------------
 # AI Financial Advisor
 # ---------------------------
